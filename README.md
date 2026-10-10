@@ -189,30 +189,76 @@ flutter analyze
 ### 1. Yêu Cầu Môi Trường
 * **Flutter SDK**: `>= 3.13.0` (Dart 3.x)
 * **Android SDK**: `minSdkVersion = 21` (Android 5.0 trở lên)
-* **Thiết bị**: Máy ảo Android Emulator hoặc Điện thoại Android thật cắm cáp USB.
+* **Thiết bị chạy**: Điện thoại Android thật cắm cáp USB (khuyên dùng để sử dụng Camera & ML Kit mượt nhất) hoặc Máy ảo Android Emulator.
 
-### 2. Cài Đặt & Chạy Debug
+---
+
+### 2. Tải Mã Nguồn & Cài Đặt Thư Viện
+Mở Terminal / PowerShell và chạy các lệnh:
 ```bash
-# 1. Clone repository
-git clone https://github.com/<your-username>/vku_expense_ocr.git
-cd vku_expense_ocr
+# 1. Clone repository chính thức
+git clone https://github.com/nhatanh19/Receipt-Expense-Tracker.git
+cd Receipt-Expense-Tracker
 
-# 2. Cài đặt các gói thư viện
+# 2. Tải và cài đặt toàn bộ dependencies
 flutter pub get
-
-# 3. Chạy ứng dụng trên thiết bị đang kết nối
-flutter run
 ```
 
-### 3. Cài Đặt Bản Release APK Sẵn Có (Khuyên dùng)
-Tệp APK Release chính thức đã được build sẵn và tối ưu hóa không giật lag:
-* **Đường dẫn**: `build/app/outputs/flutter-apk/app-release.apk` (83.2 MB)
-* Cài đặt nhanh vào điện thoại đã bật USB Debugging:
+---
+
+### 3. Kết Nối & Cấu Hình Điện Thoại Android Thật (Qua Cáp USB)
+
+Để ứng dụng có thể sử dụng Camera và nhận diện hóa đơn thực tế qua cáp USB:
+
+1. **Bật Tùy chọn nhà phát triển (Developer Options)**:
+   - Vào **Cài đặt (Settings)** $\rightarrow$ **Thông tin điện thoại (About phone)** $\rightarrow$ **Thông tin phần mềm**.
+   - Nhấn **7 lần** liên tục vào **Số hiệu bản dựng (Build number)** cho đến khi máy báo *"Bạn đã là nhà phát triển!"*.
+2. **Bật Gỡ lỗi USB (USB Debugging)**:
+   - Quay lại Cài đặt $\rightarrow$ vào **Tùy chọn nhà phát triển (Developer Options)**.
+   - Bật công tắc **Gỡ lỗi USB (USB Debugging)** sang **BẬT (ON)**.
+3. **Cắm cáp USB vào máy tính**:
+   - Chọn chế độ kết nối USB trên điện thoại là **Truyền tệp (File Transfer / MTP)** thay vì "Chỉ sạc".
+   - Khi popup hỏi *"Cho phép gỡ lỗi USB từ máy tính này?"*, tích chọn **"Luôn cho phép"** và nhấn **OK**.
+4. **Kiểm tra kết nối trên máy tính**:
+   ```bash
+   flutter devices
+   ```
+   *(Thiết bị Android của bạn sẽ xuất hiện trong danh sách, ví dụ: `SM G998B (mobile) • android-arm64`).*
+
+---
+
+### 4. Các Cách Khởi Chạy Ứng Dụng
+
+#### Cách 1: Chạy Debug với Hot Reload (Khuyên dùng khi lập trình)
+```bash
+flutter run
+```
+*Hoặc chỉ định cụ thể thiết bị nếu có nhiều máy ảo:*
+```bash
+flutter run -d <device_id>
+```
+*Nhấn phím `r` trong Terminal để Hot Reload ngay lập tức.*
+
+#### Cách 2: Chạy Chế Độ Release Tối Ưu Tốc Độ
+```bash
+flutter run --release
+```
+
+#### Cách 3: Cài Đặt Nhanh Tệp Release APK Đã Đóng Gói Sẵn (Khuyên dùng khi chấm điểm)
+Tệp APK Release tối ưu hóa (đã tắt R8 obfuscation để ngăn chặn lỗi crash) đã được build sẵn tại:
+* **Vị trí tệp**: `build/app/outputs/flutter-apk/app-release.apk` (Dung lượng: **83.5 MB**)
+* Cài đặt tức thì lên điện thoại qua cáp USB:
   ```bash
   flutter install
-  # hoặc dùng adb:
-  adb install build/app/outputs/flutter-apk/app-release.apk
+  # hoặc dùng adb trực tiếp:
+  adb install -r build/app/outputs/flutter-apk/app-release.apk
   ```
+  *(Bạn cũng có thể sao chép file `app-release.apk` vào bộ nhớ điện thoại và nhấn cài đặt trực tiếp).*
+
+#### Cách 4: Tự Đóng Gói Lại Tệp Release APK Mới
+```bash
+flutter build apk --release
+```
 
 ---
 
